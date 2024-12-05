@@ -1,0 +1,12 @@
+{
+    "tailwindCSS.includeLanguages": {
+        "rust": "html",
+        "*.rs": "html"
+    },
+    "files.associations": {
+        "*.rs": "rust"
+    },
+    "rust-analyzer.cargo.features": [
+        "ssr"
+    ]
+}

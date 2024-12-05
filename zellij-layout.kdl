@@ -1,0 +1,27 @@
+layout {
+    pane size=1 borderless=true {
+        plugin location="zellij:tab-bar"
+    }
+    pane split_direction="vertical"  size="50%" {
+        pane split_direction="horizontal" {
+            pane size="80%" {
+                name "web-server"
+                command "just"
+                args "serve"
+            }
+            pane size="20%"{
+                name "tailwind"
+                command "just"
+                args "tailwind_watch"
+            }
+            
+        }
+        pane split_direction="horizontal" focus=true size="50%" {
+            name "console"
+        }
+    }
+    
+    pane size=2 borderless=true {
+        plugin location="zellij:status-bar"
+    }
+}
