@@ -58,6 +58,12 @@ pub fn IntegerInput(setter: WriteSignal<i64>, class: &'static str) -> impl IntoV
         }
     };
 
+    let handle_keydown = move |ev: KeyboardEvent| {
+        if ev.key() == "Enter" {
+            input_element.get().unwrap().blur().unwrap();
+        }
+    };
+
     view! {
         <input
             type="text"
@@ -67,6 +73,7 @@ pub fn IntegerInput(setter: WriteSignal<i64>, class: &'static str) -> impl IntoV
             on:input:target=update_value
             on:keypress=prevent_non_numeric
             on:focus=clear_zero_on_focus
+            on:keydown=handle_keydown
             value=number_value
             node_ref=input_element
             class=class
@@ -102,6 +109,12 @@ pub fn PlayerNameInput(setter: WriteSignal<String>, class: &'static str) -> impl
         }
     };
 
+    let handle_keydown = move |ev: KeyboardEvent| {
+        if ev.key() == "Enter" {
+            input_element.get().unwrap().blur().unwrap();
+        }
+    };
+
     view! {
         <input
             type="text"
@@ -109,6 +122,7 @@ pub fn PlayerNameInput(setter: WriteSignal<String>, class: &'static str) -> impl
             autocomplete="off"
             on:input:target=update_value
             on:focus=clear_default_on_focus
+            on:keydown=handle_keydown
             value=name_value
             node_ref=input_element
             class=class
