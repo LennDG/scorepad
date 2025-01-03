@@ -63,10 +63,53 @@ pub fn IntegerInput(setter: WriteSignal<i64>, class: &'static str) -> impl IntoV
             type="text"
             placeholder="0"
             inputmode="numeric"
+            autocomplete="off"
             on:input:target=update_value
             on:keypress=prevent_non_numeric
             on:focus=clear_zero_on_focus
             value=number_value
+            node_ref=input_element
+            class=class
+        />
+    }
+}
+
+#[component]
+pub fn PlayerNameInput(setter: WriteSignal<String>, class: &'static str) -> impl IntoView {
+    let name_value = RwSignal::new(String::from("Player"));
+    let input_element: NodeRef<html::Input> = NodeRef::new();
+
+    let update_value = move |_| {
+        let input = input_element.get().unwrap();
+        let value = input.value();
+
+        // Don't allow empty names, reset to "Player" if empty
+        if value.trim().is_empty() {
+            name_value.set(String::from("Player"));
+            setter.set(String::from("Player"));
+            return;
+        }
+
+        name_value.set(value.clone());
+        setter.set(value);
+    };
+
+    let clear_default_on_focus = move |_| {
+        let input = input_element.get().unwrap();
+        if input.value().starts_with("Player") {
+            input.set_value("");
+            name_value.set(String::new());
+        }
+    };
+
+    view! {
+        <input
+            type="text"
+            placeholder="Player"
+            autocomplete="off"
+            on:input:target=update_value
+            on:focus=clear_default_on_focus
+            value=name_value
             node_ref=input_element
             class=class
         />

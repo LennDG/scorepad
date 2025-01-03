@@ -1,11 +1,11 @@
-use crate::components::IntegerInput;
+use crate::components::{IntegerInput, PlayerNameInput};
 use leptos::prelude::*;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct PlayerScores {
     id: Uuid,
-    name: String,
+    name: RwSignal<String>,
     scores: Vec<Score>,
 }
 
@@ -13,7 +13,7 @@ impl PlayerScores {
     pub fn new(name: &str) -> Self {
         Self {
             id: Uuid::new_v4(),
-            name: name.to_string(),
+            name: RwSignal::new(name.to_string()),
             scores: vec![],
         }
     }
@@ -38,6 +38,10 @@ impl PlayerScores {
             }
             retain
         })
+    }
+
+    pub fn set_name(&mut self, name: String) {
+        self.name.set(name);
     }
 }
 
@@ -107,7 +111,14 @@ pub fn Scoresheet() -> impl IntoView {
                             each=move || players.get()
                             key=|player| player.id
                             children=move |player| {
-                                view! { <th class="px-4 py-2">{player.name}</th> }
+                                view! {
+                                    <th class="px-4 py-2">
+                                        <PlayerNameInput
+                                            setter=player.name.write_only()
+                                            class="bg-transparent text-white text-center w-full focus:outline-none focus:border-b focus:border-blue-500"
+                                        />
+                                    </th>
+                                }
                             }
                         />
                     </tr>
@@ -147,9 +158,7 @@ pub fn Scoresheet() -> impl IntoView {
                             children=move |player| {
                                 let id = player.id;
                                 view! {
-                                    <td class="px-4 py-2 text-center">
-                                        {move || player_sum(id)}
-                                    </td>
+                                    <td class="px-4 py-2 text-center">{move || player_sum(id)}</td>
                                 }
                             }
                         />

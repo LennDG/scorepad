@@ -5,7 +5,7 @@ use leptos_router::{
     StaticSegment,
 };
 
-use crate::{sandbox::Sandbox, scoresheet::Scoresheet};
+use crate::scoresheet::Scoresheet;
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
@@ -25,7 +25,6 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
         </html>
     }
 }
-
 #[component]
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
@@ -43,8 +42,8 @@ pub fn App() -> impl IntoView {
         <Router>
             <main>
                 <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=HomePage />
-                    <Route path=StaticSegment("scoresheet") view=Scoresheet />
+                    <Route path=StaticSegment("") view=Scoresheet />
+                    //<Route path=StaticSegment("scoresheet") view=Scoresheet />
                 </Routes>
             </main>
         </Router>
@@ -54,20 +53,8 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let count = RwSignal::new(0);
-    let on_click = move |_| *count.write() += 1;
-
     view! {
         <div class="min-h-screen flex flex-col items-center justify-center p-4">
-            <h1 class="text-4xl font-bold text-white mb-8">"Welcome to Leptos!"</h1>
-            <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors mb-4"
-                on:click=on_click
-            >
-                "Click Me: "
-                {count}
-            </button>
             <A
                 href="/scoresheet"
                 attr:class="text-blue-400 hover:text-blue-300 underline transition-colors"
@@ -75,7 +62,5 @@ fn HomePage() -> impl IntoView {
                 "Scoresheet"
             </A>
         </div>
-
-        <Sandbox />
     }
 }
