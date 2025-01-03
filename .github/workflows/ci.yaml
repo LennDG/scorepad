@@ -43,4 +43,4 @@ jobs:
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
           -H "Content-Type: application/json" \
-          -d '{"hosts":["scorepad.club"]}'
+          -d '{"files":["https://scorepad.club/pkg/scorepad.css", "https://scorepad.club/pkg/scorepad.js", "https://scorepad.club/pkg/scorepad.wasm"]}'
