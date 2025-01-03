@@ -1,7 +1,10 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
+    use axum::response::{IntoResponse, Response};
+    use axum::routing::get;
     use axum::{middleware, Router};
+    use http::StatusCode;
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
@@ -14,17 +17,20 @@ async fn main() {
     // Generate the list of routes in your Leptos App
     let routes = generate_route_list(App);
 
+    async fn health_check_handler() -> Response {
+        StatusCode::OK.into_response()
+    }
+
     let app = Router::new()
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
         })
+        .route("/health", get(health_check_handler))
         .fallback(file_and_error_handler)
         //.layer(middleware::map_response(cache_control))
         .with_state(leptos_options);
 
-    // run our app with hyper
-    // `axum::Server` is a re-export of `hyper::Server`
     log!("listening on http://{}", &addr);
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
     axum::serve(listener, app.into_make_service())
