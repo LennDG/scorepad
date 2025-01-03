@@ -1,11 +1,12 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::Router;
+    use axum::{middleware, Router};
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use scorepad::app::*;
+    use scorepad::file_server::{cache_control, file_and_error_handler};
 
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
@@ -18,7 +19,8 @@ async fn main() {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
         })
-        .fallback(leptos_axum::file_and_error_handler(shell))
+        .fallback(file_and_error_handler)
+        //.layer(middleware::map_response(cache_control))
         .with_state(leptos_options);
 
     // run our app with hyper

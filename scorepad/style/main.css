@@ -558,6 +558,10 @@ video {
   position: static;
 }
 
+.relative {
+  position: relative;
+}
+
 .mb-8 {
   margin-bottom: 2rem;
 }
