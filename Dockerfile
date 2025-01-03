@@ -18,6 +18,9 @@ RUN just release
 # Run the app!
 FROM rustlang/rust:nightly-alpine AS runner
 
+RUN apk update && \
+    apk add --no-cache curl
+
 WORKDIR /app
 
 COPY --from=builder /work/target/release/scorepad /app/
