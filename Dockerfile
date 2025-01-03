@@ -22,7 +22,10 @@ WORKDIR /app
 
 COPY --from=builder /work/target/release/scorepad /app/
 COPY --from=builder /work/target/site /app/site
-COPY --from=builder /work/Cargo.toml /app/
+
+ENV LEPTOS_SITE_ADDR="0.0.0.0:3000"
+ENV LEPTOS_SITE_ROOT="site"
+ENV LEPTOS_SITE_PKG_DIR="pkg"
 
 EXPOSE 3000
 

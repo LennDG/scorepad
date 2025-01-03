@@ -7,7 +7,6 @@ release:
 docker_release:
     docker build -t scorepad .
 
-
 kill: 
     -lsof -i :10000 | awk 'NR==2 {print $2}' | xargs kill
 
